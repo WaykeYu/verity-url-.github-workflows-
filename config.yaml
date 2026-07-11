@@ -1,0 +1,19 @@
+workers: 50
+
+timeout: 8
+
+retry: 3
+
+input: data/source.txt
+
+output: data/source.txt
+
+invalid: data/invalid_urls.txt
+
+duplicate: data/duplicate_urls.txt
+
+report: data/report.md
+
+backup: true
+
+history: data/history
