@@ -5,51 +5,51 @@
 | 項目 | 數量 | 比例 |
 |------|------|------|
 | 總網址數 | 580 | 100% |
-| ✅ 有效 | 363 | 62.6% |
-| ❌ 失效 | 208 | 35.9% |
+| ✅ 有效 | 336 | 57.9% |
+| ❌ 失效 | 233 | 40.2% |
 | 🔄 重複 | 21 | 3.6% |
 
 ## 🧹 清理統計
 
 - **移除空白行**：0 行
-- **移除無網址行**：164 行
+- **移除無網址行**：185 行
 
-## ✅ 有效網址 (363)
+## ✅ 有效網址 (336)
 
 有效網址已儲存至：`data/source.txt`
 
 ## ❌ 無效網址列表
 
-- `https://raw.githubusercontent.com/Darklessing/catvod/refs/heads/main/xuenai/index.js.md5`
-- `https://raw.githubusercontent.com/4TVBox/Cat/refs/heads/main/index.js.md5`
-- `https://raw.githubusercontent.com/git8477/wexfnw/refs/heads/main/index.js.md5`
-- `https://raw.githubusercontent.com/Darklessing/catvod/refs/heads/main/xuenai/index.js`
-- `https://raw.githubusercontent.com/Darklessing/catvod/refs/heads/main/douer/index.js.md5`
-- `https://raw.githubusercontent.com/Darklessing/catvod/refs/heads/main/lmentor/index.js.md5`
 - `https://qist.wyfc.qzz.io/xiaosa/api.json11.UUCCC`
 - `https://play.iptv365.org/小米/api.json`
-- `https://yydsys.netlify.app/config.json`
 - `https://play.iptv365.org/骚零/api.json`
-- `http://wexfnw:wexfnw@cat.xn--4kq62z5rby2qupq9ub.top/index.js.md5`
 - `https://play.iptv365.org/白嫖/api.json`
-- `https://bitbucket.org/xduo/cool/raw/main/room.json`
-- `https://gh-proxy.com/raw.githubusercontent.com/leevi0709/one/main/jsm.json`
-- `http://wexfnw:wexfnw@cat.999888123.xyz/index.js.md5`
-- `http://wexfnw:wexfnw@cat.999888987.xyz/index.js.md5`
-- `https://codeberg.org/Jsnzkpg/Jsnzkpg/raw/branch/Jsnzkpg/Jsnzkpg2`
-- `https://jihulab.com/ymz1231/xymz/-/raw/main/ymshaoer`
-- `https://9280.kstore.space/cat/index.js.md5`
+- `http://wexfnw:wexfnw@cat.xn--4kq62z5rby2qupq9ub.top/index.js.md5`
+- `https://raw.githubusercontent.com/Darklessing/catvod/refs/heads/main/xuenai/index.js.md5`
+- `https://raw.githubusercontent.com/git8477/wexfnw/refs/heads/main/index.js.md5`
 - `http://fn.gcl.de5.net:5908/gsh950428`
-- `https://13537.kstore.vip/tvbox/test.json`
-- `https://7337.kstore.space/qxys/禁止传播.json`
-- `https://ym.wya6.cn/`
-- `https://12301.kstore.space/精选库/jxuanc.txt`
-- `https://raw.githubusercontent.com/jymyong/jymyong.github.io/main/json/春盈天下.json`
+- `https://raw.githubusercontent.com/Darklessing/catvod/refs/heads/main/xuenai/index.js`
+- `https://raw.githubusercontent.com/Darklessing/catvod/refs/heads/main/douer/index.js.md5`
+- `https://raw.githubusercontent.com/4TVBox/Cat/refs/heads/main/index.js.md5`
+- `http://wexfnw:wexfnw@cat.999888987.xyz/index.js.md5`
+- `https://jihulab.com/ymz1231/xymz/-/raw/main/ymshaoer`
+- `https://raw.githubusercontent.com/Darklessing/catvod/refs/heads/main/lmentor/index.js.md5`
+- `http://wexfnw:wexfnw@cat.999888123.xyz/index.js.md5`
 - `https://9280.kstore.vip/cat/index.js.md5`
-- `https://cnb.cool/aooooowuuuuu/FreeSpider/-/git/raw/main/config`
-- `https://play.iptv365.org/短剧频道/api.json`
-- `https://notabug.org/imbig66/tv-spider-man/raw/master/%E9%85%8D%E7%BD%AE/0801.json`
-- `https://d.kstore.dev/download/6651/api.json`
+- `https://9280.kstore.space/cat/index.js.md5`
+- `https://13537.kstore.vip/tvbox/test.json`
+- `https://yydsys.netlify.app/config.json`
+- `https://gh-proxy.org/https://github.com/niuber/niuber/raw/refs/heads/main/tvbox/TVBoxOSC/tvbox/api.json`
+- `https://gh-proxy.com/raw.githubusercontent.com/leevi0709/one/main/jsm.json`
+- `https://12301.kstore.space/精选库/jxuanc.txt`
+- `https://ym.wya6.cn/`
+- `https://7337.kstore.space/qxys/禁止传播.json`
+- `https://cdn.gh-proxy.org/https://raw.githubusercontent.com/yydfys/yydf/main/XYQTVBox/xyq.json`
+- `https://cdn.gh-proxy.org/https://raw.githubusercontent.com/guot55/YGBH/main/vip2.json`
+- `https://gitlab.com/dokiss/tvbox/-/raw/main/%E5%9C%A5%E5%BF%88.json`
+- `https://cdn.gh-proxy.org/https://raw.githubusercontent.com/qirenzhidao/tvbox18/main/tv.json`
+- `https://bitbucket.org/xduo/cool/raw/main/room.json`
+- `https://codeberg.org/Jsnzkpg/Jsnzkpg/raw/branch/Jsnzkpg/Jsnzkpg2`
 完整清單請查看：`data/invalid_urls.txt`
 
 ## 🔄 重複網址列表
@@ -78,6 +78,6 @@
 完整清單請查看：`data/duplicate_urls.txt`
 
 ---
-🕐 更新時間：2026-07-11 07:21:11
+🕐 更新時間：2026-07-11 07:38:22
 
-✅ 報告由 TVBox URL Checker Pro v4.2 自動生成
+✅ 報告由 TVBox URL Checker Pro v4.3 自動生成
