@@ -14,25 +14,35 @@ Part 1
 ✓ 多執行緒準備
 """
 
-from __future__ import annotations
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 
-import os
-import re
-import time
+from __future__ import annotations
 import json
+import re
+import shutil
 import socket
-import pathlib
+import time
 from pathlib import Path
 from concurrent.futures import ThreadPoolExecutor
-from concurrent.futures import as_completed
-
 import requests
+import yaml
 
-###########################################################################
+with open("config.yaml", "r", encoding="utf-8") as f:
+    cfg = yaml.safe_load(f)
+INPUT_FILE = cfg["input"]
+OUTPUT_FILE = cfg["output"]
 
-INPUT_FILE = "data/source.txt"
+INVALID_FILE = cfg["invalid"]
+DUPLICATE_FILE = cfg["duplicate"]
+REPORT_FILE = cfg["report"]
 
-OUTPUT_FILE = "data/source.txt"
+MAX_WORKERS = cfg["workers"]
+TIMEOUT = cfg["timeout"]
+RETRY = cfg["retry"]
+
+input: data/source.txt
+output: data/source_clean.txt
 
 INVALID_FILE = "data/invalid_urls.txt"
 
@@ -101,6 +111,40 @@ class URLChecker:
     #######################################################################
 
     def save(self, lines):
+
+    Path(OUTPUT_FILE).parent.mkdir(
+        parents=True,
+        exist_ok=True
+    )
+
+    if cfg["backup"]:
+
+        history = Path(cfg["history"])
+
+        history.mkdir(
+            parents=True,
+            exist_ok=True
+        )
+
+        ts = time.strftime("%Y%m%d-%H%M")
+
+        if Path(OUTPUT_FILE).exists():
+
+            shutil.copy2(
+
+                OUTPUT_FILE,
+
+                history / f"{ts}.txt"
+
+            )
+
+    Path(OUTPUT_FILE).write_text(
+
+        "\n".join(lines),
+
+        encoding="utf-8"
+
+    )
 
         Path(OUTPUT_FILE).write_text(
 
