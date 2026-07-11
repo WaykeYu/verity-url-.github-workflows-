@@ -2,15 +2,14 @@
 # -*- coding: utf-8 -*-
 
 """
-TVBox URL Checker Pro v4.5
-完美相容版 (解決 .md5 檔案與中文阻斷誤判)
+TVBox URL Checker Pro v4.6
+頂配穩定版 (完全解決 .js / .md5 / 中文與代理誤判)
 
 更新重點
 -------------------------
-1. 【重大修正】支援 .md5 檔案放行：只要網址中包含 `.md5` 且連線成功 (狀態碼 < 400)，直接判定有效！
-   --> 完美解決 index.js.md5 等校驗檔因內文僅有雜湊值、缺乏 TVBox 關鍵字而被誤殺的問題。
-2. 延續抗封鎖與中文優化：保留標準 URL 中文編碼、智慧 .json 判定、偽裝瀏覽器 Header 與指數退避重試。
-3. 保持格式純粹：不進行代理解包，完美保留原始檔案的排版與間距。
+1. 【擴大字尾放行】將 `.js` 納入智慧放行清單：與 `.json`、`.md5` 享有同等免校驗待遇。完美解決 `index.js` 等純腳本因缺乏內文特徵指標被誤殺的問題。
+2. 【完美支援 gh-proxy】優化代理判定：明確放行包含 `gh-proxy` 在內的加速節點，只要網路能正常通訊即直接視為有效。
+3. 【全面抗阻斷】保留標準 URL 中文編碼 (完美相容 /騷零/ /白嫖/ /小米/ 等中文路徑)、偽裝瀏覽器 Header 與指數退避重試機制。
 """
 
 from __future__ import annotations
@@ -47,7 +46,7 @@ INVALID_FILE = cfg.get("invalid", "data/invalid_urls.txt")
 DUPLICATE_FILE = cfg.get("duplicate", "data/duplicate_urls.txt")
 REPORT_FILE = cfg.get("report", "data/report.md")
 MAX_WORKERS = cfg.get("workers", 50)
-TIMEOUT = cfg.get("timeout", 10)
+TIMEOUT = cfg.get("timeout", 12)  # 稍微拉長因應 gh-proxy 轉導延遲
 RETRY = cfg.get("retry", 3)
 BACKUP_ENABLED = cfg.get("backup", True)
 HISTORY_DIR = cfg.get("history", "data/history")
@@ -57,8 +56,7 @@ BROWSER_HEADERS = {
     "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
     "Accept-Language": "zh-TW,zh;q=0.9,en-US;q=0.8,en;q=0.7",
     "Cache-Control": "max-age=0",
-    "Connection": "keep-alive",
-    "Upgrade-Insecure-Requests": "1"
+    "Connection": "keep-alive"
 }
 
 # ============================================================================
@@ -67,15 +65,16 @@ BROWSER_HEADERS = {
 
 URL_PATTERN = re.compile(r"https?://[^\s<>\"']+")
 
-# 智慧放行字尾判定 (只要連線成功即代表有效，不校驗內文)
-SAFE_EXT_PATTERN = re.compile(r"\.(json|md5)(?:\?|$)", re.IGNORECASE)
+# 智慧免內文校驗字尾 (只要連線成功即代表有效)：涵蓋 json、md5、js 腳本
+SAFE_EXT_PATTERN = re.compile(r"\.(json|md5|js)(?:\?|$)", re.IGNORECASE)
 
 SHORT_URL_DOMAINS = {
     "t.cn", "url.cn", "suo.yt", "suo.im", "dwz.cn", "bit.ly", "tinyurl.com", 
     "git.io", "cutt.ly", "shorturl.at", "rebrand.ly", "t.ly", "is.gd"
 }
 
-PROXY_KEYWORDS = ["scrapeops", "scraperapi", "proxy", "agent", "api?url=", "?url=", "&url="]
+# 代理網址特徵 (擴大納入 gh-proxy)
+PROXY_KEYWORDS = ["scrapeops", "scraperapi", "proxy", "agent", "api?url=", "?url=", "&url=", "gh-proxy"]
 INVALID_KEYWORDS = ["404 not found", "access denied", "502 bad gateway", "503 service unavailable"]
 
 @dataclass
@@ -203,7 +202,7 @@ class URLChecker:
         return False
 
     def is_safe_ext_url(self, url: str) -> bool:
-        """智慧判定網址是否為免校驗的特殊字尾 (如 .json, .md5)"""
+        """智慧判定網址是否為免校驗的特殊字尾 (涵蓋 .json, .md5, .js)"""
         return bool(SAFE_EXT_PATTERN.search(url))
 
     def process_url(self, url: str) -> Optional[CheckResult]:
@@ -288,7 +287,7 @@ class URLChecker:
     # ========================================================================
 
     def check_url(self, url: str) -> bool:
-        """核心連線校驗 - 智慧字尾放行與抗封鎖"""
+        """核心連線校驗 - 升級抗封鎖與 gh-proxy / .js 相容性"""
         for attempt in range(RETRY):
             try:
                 # 1. HEAD 預檢
@@ -311,11 +310,11 @@ class URLChecker:
                         continue
                     return False
                 
-                # 如果是短網址、代理網址、.json、.md5 結尾，連線成功直接放行！
+                # 如果是短網址、代理網址、或者免校驗字尾 (.json, .md5, .js)，有成功響應直接放行！
                 if self.is_short_or_proxy_url(url) or self.is_safe_ext_url(url):
                     return True
                 
-                # 3. 其他非特定字尾的常規網址（如 .txt, .m3u8 等）才讀取前 2KB 進行特徵比對
+                # 3. 其他常規網址（如 .txt, .m3u8 等）才讀取前 2KB 進行特徵比對
                 content = self._read_content(response)
                 if self.validate_content(url, content):
                     return True
@@ -399,12 +398,12 @@ class URLChecker:
             lines.append(f"完整清單請查看：`{DUPLICATE_FILE}`")
         else:
             lines.append("✅ 沒有重複網址")
-        lines.extend(["", "---", f"🕐 更新時間：{time.strftime('%Y-%m-%d %H:%M:%S')}", "", "✅ 報告由 TVBox URL Checker Pro v4.5 自動生成"])
+        lines.extend(["", "---", f"🕐 更新時間：{time.strftime('%Y-%m-%d %H:%M:%S')}", "", "✅ 報告由 TVBox URL Checker Pro v4.6 自動生成"])
         Path(REPORT_FILE).write_text("\n".join(lines), encoding="utf-8")
 
 if __name__ == "__main__":
     print("=" * 70)
-    print("🚀 TVBox URL Checker Pro v4.5 (完美相容版)")
+    print("🚀 TVBox URL Checker Pro v4.6 (頂配穩定版)")
     print("=" * 70)
     start_time = time.time()
     try:
